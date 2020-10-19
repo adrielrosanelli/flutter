@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logica/screen/tela.dart';
 
 
 class BoasVindas extends StatelessWidget {
@@ -9,9 +11,20 @@ class BoasVindas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: Icon(Icons.person),
-          title: Text('$_nome $_sobrenome'),
-          centerTitle: true,
+          leading: Image.asset('lib/assets/avatar.png', scale: 20,),
+          title:Text('$_nome $_sobrenome'),
+           actions: <Widget>[
+            IconButton(
+              icon:Icon(Icons.arrow_back_ios),tooltip: 'Sair',
+              onPressed:(){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Apresentacao()));
+
+            } 
+            ),
+            
+            
+          ],
+          
         ),
         body: Center(
           
@@ -25,6 +38,7 @@ class BoasVindas extends StatelessWidget {
                       color: Colors.black,
                     )),
               ),
+              
             ],
           ),
         ));

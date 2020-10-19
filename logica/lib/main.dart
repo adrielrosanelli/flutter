@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: '                            Flutterado'),
+      home: Apresentacao(),
     );
   }
 }
@@ -37,10 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
+        resizeToAvoidBottomPadding: true,
         body: Center(
           child: Column(
             children: <Widget>[
-              Apresentacao()
+
             ],
           ),
         ));
