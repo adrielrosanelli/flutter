@@ -13,8 +13,9 @@ class _EntradaDadosState extends State<EntradaDados> {
 
   void _submit() {
     formkey.currentState.save();
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => BoasVindas(_nome, _sobrenome)));
+    // Navigator.pushReplacement(context,
+    //     MaterialPageRoute(builder: (context) => BoasVindas(_nome, _sobrenome)));
+    Navigator.of(context).pushNamed('/home');
   }
 
   @override
@@ -51,15 +52,16 @@ class _EntradaDadosState extends State<EntradaDados> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                     child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        labelText: 'Nome',
-                        hintText: 'Digite seu nome',
+                        labelText: 'E-mail',
+                        hintText: 'Digite seu Email',
                         border: OutlineInputBorder(),
                         suffixIcon: Icon(Icons.person),
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Digite seu nome';
+                          return 'Digite um e-mail válido';
                         }
                         return null;
                       },
@@ -70,15 +72,18 @@ class _EntradaDadosState extends State<EntradaDados> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                     child: TextFormField(
+
+                      obscureText: true,
                       decoration: InputDecoration(
-                        labelText: 'Sobrenome',
-                        hintText: 'Digite seu sobrenome',
+                        
+                        labelText: 'Senha',
+                        hintText: 'Digite uma senha forte',
                         border: OutlineInputBorder(),
                         suffixIcon: Icon(Icons.person),
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Digite seu Sobrenome';
+                          return 'Digite uma senha válida';
                         }
                         return null;
                       },

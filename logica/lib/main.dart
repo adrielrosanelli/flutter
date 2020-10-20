@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
+import 'package:logica/screen/boasVindas.dart';
 import './screen/tela.dart';
 void main() {
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -21,6 +23,12 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: Apresentacao(),
+          initialRoute: '/',
+          routes: {
+            // '/': (context)=> Apresentacao(),
+            '/home': (context)=> BoasVindas('oi','ola'),
+          },
+        
         );
       },
     );
