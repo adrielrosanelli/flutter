@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logica/component/appController.dart';
 import 'package:logica/screen/tela.dart';
-
 
 class BoasVindas extends StatelessWidget {
   String _nome, _sobrenome;
@@ -11,23 +11,49 @@ class BoasVindas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: Image.asset('lib/assets/avatar.png', scale: 20,),
-          title:Text('$_nome $_sobrenome'),
-           actions: <Widget>[
-            IconButton(
-              icon:Icon(Icons.arrow_back_ios),tooltip: 'Sair',
-              onPressed:(){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Apresentacao()));
-
-            } 
+          leading: Image.asset(
+            'lib/assets/avatar.png',
+            scale: 20,
+          ),
+          title: Text('$_nome $_sobrenome'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                if (AppController.instance.isDartTheme == false) {
+                  AppController.instance.changeTheme();
+                } else if (AppController.instance.isDartTheme != false) {
+                  AppController.instance.changeTheme();
+                }
+              },
+              child: Icon(
+                Icons.brightness_medium,
+                color: Colors.white,
+              ),
             ),
-            
-            
+            IconButton(
+                icon: Icon(Icons.logout),
+                tooltip: 'Sair',
+                onPressed: () {
+                  showDialog(context: context, builder: (BuildContext context){
+                    return AlertDialog(
+                      title: new Text('Deseja Continuar?'),
+                      content: new Text('Tem certeza que deseja Sair?'),
+                      actions: [
+                        new FloatingActionButton(
+                          child: new Text('Sair'),
+                          onPressed:(){
+                            Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Apresentacao()));
+                          }
+                        )
+                      ]
+                    );
+                  });
+                  
+                }),
           ],
-          
         ),
         body: Center(
-          
           child: Column(
             children: <Widget>[
               Padding(
@@ -35,10 +61,8 @@ class BoasVindas extends StatelessWidget {
                 child: Text('Seja Bem-Vindo',
                     style: TextStyle(
                       fontSize: 35,
-                      color: Colors.black,
                     )),
               ),
-              
             ],
           ),
         ));

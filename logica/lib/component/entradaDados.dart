@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:logica/screen/boasVindas.dart';
 
@@ -14,7 +13,7 @@ class _EntradaDadosState extends State<EntradaDados> {
 
   void _submit() {
     formkey.currentState.save();
-    Navigator.push(context,
+    Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => BoasVindas(_nome, _sobrenome)));
   }
 
@@ -25,10 +24,29 @@ class _EntradaDadosState extends State<EntradaDados> {
         child: Form(
             key: formkey,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                    Image.asset(
+                  'lib/assets/flutter.png',
+                  scale: 10,
+                ),
+                    ]
+                  ),
                   
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: Text('Efetue o Login',
+                          style: TextStyle(
+                            fontSize: 30,
+                          )),
+                    ),
+                  ],
+                ),
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -72,28 +90,13 @@ class _EntradaDadosState extends State<EntradaDados> {
                       onSaved: (input) => _sobrenome = input,
                     ),
                   ),
-                  SizedBox(
-                    width: 200,
-                    height: 45,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (formkey.currentState.validate()) {
+                  FloatingActionButton(onPressed: (
+                    
+                  ){
+                    if (formkey.currentState.validate()) {
                             _submit();
-                          }
-                        },
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Entrar  ',
-                                style: TextStyle(fontSize: 30),
-                              ),
-                              Icon(
-                                Icons.login,
-                                size: 30,
-                              ),
-                            ])),
-                  )
+                          }},
+                  child: Icon(Icons.login))
                 ])));
   }
 }

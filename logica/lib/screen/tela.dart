@@ -1,29 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logica/component/appController.dart';
 import 'package:logica/component/entradaDados.dart';
 
-class Apresentacao extends StatelessWidget {
+class Apresentacao extends StatefulWidget {
+  @override
+  _ApresentacaoState createState() => _ApresentacaoState();
+}
+
+class _ApresentacaoState extends State<Apresentacao> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Image.asset(
-                'lib/assets/flutter.png',
-                scale: 10,
-              )),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: Text('Efetue o Login',
-                style: TextStyle(
-                  fontSize: 35,
-                  color: Colors.black,
-                )),
+        appBar: AppBar(
+            backgroundColor: Color.fromRGBO(100, 100, 100, 0),
+            elevation: 0,
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                      
+                    if (AppController.instance.isDartTheme == false) {
+                      AppController.instance.changeTheme();
+                    } else if(AppController.instance.isDartTheme != false){
+                      AppController.instance.changeTheme();
+                    
+                    }
+                  },
+                  child: Icon(Icons.brightness_medium)),
+            ]),
+        body: Container(
+          child: SingleChildScrollView(
+                      child: Column(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top:70),
+                  child: 
+                  EntradaDados()
+                  ,)
+                  ]),
           ),
-          EntradaDados()
-        ]));
+        ));
   }
 }

@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:logica/component/appController.dart';
 import './screen/tela.dart';
-
 void main() {
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Apresentacao(),
+    return AnimatedBuilder(
+      animation: AppController.instance,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.purple,
+            brightness: AppController.instance.isDartTheme
+                ? Brightness.dark
+                : Brightness.light,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: Apresentacao(),
+        );
+      },
     );
   }
 }
@@ -30,19 +37,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
         resizeToAvoidBottomPadding: true,
         body: Center(
           child: Column(
-            children: <Widget>[
-
-            ],
+            children: <Widget>[],
           ),
         ));
   }
