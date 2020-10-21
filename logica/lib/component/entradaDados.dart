@@ -13,9 +13,9 @@ class _EntradaDadosState extends State<EntradaDados> {
 
   void _submit() {
     formkey.currentState.save();
-    // Navigator.pushReplacement(context,
-    //     MaterialPageRoute(builder: (context) => BoasVindas(_nome, _sobrenome)));
-    Navigator.of(context).pushNamed('/home');
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => BoasVindas(_nome, _sobrenome)));
+    // Navigator.of(context).pushNamed('/home');
   }
 
   @override
