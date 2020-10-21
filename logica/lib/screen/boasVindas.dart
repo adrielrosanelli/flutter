@@ -1,11 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
+import 'package:logica/component/camera.dart';
+
 import 'package:logica/screen/tela.dart';
 
-class BoasVindas extends StatelessWidget {
+class BoasVindas extends StatefulWidget {
+
   String _nome, _sobrenome;
   BoasVindas(this._nome, this._sobrenome);
+
+
+  @override
+  _BoasVindasState createState() => _BoasVindasState();
+}
+
+class _BoasVindasState extends State<BoasVindas> {
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +28,7 @@ class BoasVindas extends StatelessWidget {
             'lib/assets/avatar.png',
             scale: 20,
           ),
-          title: Text('$_nome $_sobrenome'),
+          title: Text('${widget._nome} ${widget._sobrenome}'),
           actions: <Widget>[
             FlatButton(
               onPressed: () {
@@ -56,13 +69,8 @@ class BoasVindas extends StatelessWidget {
         body: Center(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 25),
-                child: Text('Seja Bem-Vindo',
-                    style: TextStyle(
-                      fontSize: 35,
-                    )),
-              ),
+              CameraScreen(),
+              
             ],
           ),
         ));

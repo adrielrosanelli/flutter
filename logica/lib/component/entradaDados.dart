@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logica/screen/boasVindas.dart';
 
+
 class EntradaDados extends StatefulWidget {
   @override
   _EntradaDadosState createState() => _EntradaDadosState();

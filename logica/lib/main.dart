@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
-import 'package:logica/screen/boasVindas.dart';
 import './screen/tela.dart';
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // '/': (context)=> Apresentacao(),
-            '/home': (context)=> BoasVindas('oi','ola'),
+            // '/home': (context)=> BoasVindas('oi','ola'),
           },
         
         );
