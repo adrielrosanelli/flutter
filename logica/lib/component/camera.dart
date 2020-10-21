@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+// TODO Criar telas novas, para os componentes.
+// TODO     Camera e galeria são na mesma tela,
+// TODO                      leitor QR na outra
+
 class CameraScreen extends StatefulWidget {
   @override
   _CameraScreenState createState() => _CameraScreenState();

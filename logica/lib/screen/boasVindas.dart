@@ -70,7 +70,9 @@ class _BoasVindasState extends State<BoasVindas> {
           // TODO Criar grid com botões.
           child: Column(
             children: <Widget>[
-              CameraScreen()
+              // TODO Trazer os valores das outras telas
+              // CameraScreen(),
+              
             ],
           ),
         ));

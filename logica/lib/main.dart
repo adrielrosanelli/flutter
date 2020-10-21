@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
                 : Brightness.light,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: CameraScreen(),
+          home: Apresentacao(),
           initialRoute: '/',
           routes: {
             // '/': (context)=> Apresentacao(),
