@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
+import 'package:logica/component/camera.dart';
 import './screen/tela.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
                 : Brightness.light,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: Apresentacao(),
+          home: CameraScreen(),
           initialRoute: '/',
           routes: {
             // '/': (context)=> Apresentacao(),

@@ -67,10 +67,10 @@ class _BoasVindasState extends State<BoasVindas> {
           ],
         ),
         body: Center(
+          // TODO Criar grid com botões.
           child: Column(
             children: <Widget>[
-              CameraScreen(),
-              
+              CameraScreen()
             ],
           ),
         ));
