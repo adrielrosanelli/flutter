@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
-import 'package:logica/component/camera.dart';
 import 'package:logica/component/entradaDados.dart';
 import 'package:logica/component/qrCode.dart';
 

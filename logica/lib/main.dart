@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
-import 'package:logica/component/camera.dart';
+import 'package:logica/component/imagem.dart';
 import './screen/tela.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
