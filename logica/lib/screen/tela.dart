@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
+import 'package:logica/component/camera.dart';
 import 'package:logica/component/entradaDados.dart';
+import 'package:logica/component/qrCode.dart';
 
 class Apresentacao extends StatefulWidget {
   @override
@@ -15,15 +17,16 @@ class _ApresentacaoState extends State<Apresentacao> {
         appBar: AppBar(
             backgroundColor: Color.fromRGBO(100, 100, 100, 0),
             elevation: 0,
+            leading: FlatButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => QrCode()));
+            }, child: Icon(Icons.qr_code)),
             actions: [
               FlatButton(
                   onPressed: () {
-                      
                     if (AppController.instance.isDartTheme == false) {
                       AppController.instance.changeTheme();
                     } else if(AppController.instance.isDartTheme != false){
                       AppController.instance.changeTheme();
-                    
                     }
                   },
                   child: Icon(Icons.brightness_medium)),

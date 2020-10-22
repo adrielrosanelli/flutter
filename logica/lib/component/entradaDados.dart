@@ -26,28 +26,19 @@ class _EntradaDadosState extends State<EntradaDados> {
         child: Form(
             key: formkey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:[
-                    Image.asset(
+                  Image.asset(
                   'lib/assets/flutter.png',
                   scale: 10,
                 ),
-                    ]
-                  ),
-                  
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Text('Efetue o Login',
-                          style: TextStyle(
-                            fontSize: 30,
-                          )),
-                    ),
-                  ],
+
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Text('Efetue o Login',
+                      style: TextStyle(
+                        fontSize: 30,
+                      )),
                 ),
 
                   Padding(
@@ -73,10 +64,8 @@ class _EntradaDadosState extends State<EntradaDados> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                     child: TextFormField(
-
                       obscureText: true,
                       decoration: InputDecoration(
-                        
                         labelText: 'Senha',
                         hintText: 'Digite uma senha forte',
                         border: OutlineInputBorder(),

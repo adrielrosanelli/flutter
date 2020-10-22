@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Flutterado',
           theme: ThemeData(
             primarySwatch: Colors.purple,
             brightness: AppController.instance.isDartTheme
