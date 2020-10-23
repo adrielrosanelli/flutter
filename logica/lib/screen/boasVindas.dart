@@ -16,6 +16,7 @@ class BoasVindas extends StatefulWidget {
 }
 
 class _BoasVindasState extends State<BoasVindas> {
+  String image;
   File _image;
   String fonte;
 
@@ -95,7 +96,6 @@ class _BoasVindasState extends State<BoasVindas> {
                 onPressed: () {
                   fonte = "gallery";
                   getImage();
-                  
                 },
                 child: Icon(
                   Icons.image,
@@ -151,35 +151,67 @@ class _BoasVindasState extends State<BoasVindas> {
       ),
     );
   }
+
 // Drawer
-  Widget _drawer(){
+  Widget _drawer() {
+    image = 'a';
     return Drawer(
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(7,30,10,0),
+            padding: const EdgeInsets.fromLTRB(7, 30, 10, 0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-                          child: Row(
-                children:[
-                IconButton(icon: _image == null? Icon(Icons.people_outlined) : Image.file(_image, fit: BoxFit.fill,), onPressed: null),
-                Text('${widget._nome} ${widget._sobrenome}')
-                ] 
+              child: GestureDetector(
+                onTap: (){
+                  showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: new Text('Trocar a sua Foto?'),
+                        actions: [
+                          FlatButton(child: Icon(Icons.image),onPressed: (){
+                                  setState(() {
+                                  fonte = 'gallery';
+                                  getImage();
+                                  Navigator.of(context).pop();
+                                  });
+                                },),
+                                FlatButton(child: Icon(Icons.camera_alt),onPressed: (){
+                                  setState(() {
+                                  fonte = 'camera';
+                                  getImage();
+                                  Navigator.of(context).pop();
+                                  });
+                                },)
+                        ],
+                        );
+                  });
+                },
+                child: Row(children: [
+                  CircleAvatar(
+                    backgroundImage: _image == null ? NetworkImage('https://dummyimage.com/600x400/2462d6/c7c9e3&text=+') : FileImage(_image),
+                    child: _image == null ? Icon(Icons.add): Image.file(_image,color: Color.fromRGBO(1, 1, 1, 0),),
+                  ),
+                  Text('${widget._nome} ${widget._sobrenome}'),
+                ]),
               ),
             ),
-          )
-        ]
+          ),
+          Divider(
+            height: 10,
+          ),
+        ],
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _drawer(),
       appBar: _appBar(context),
-
       body: _body(),
-
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
@@ -192,6 +224,7 @@ class _BoasVindasState extends State<BoasVindas> {
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
     );
   }
 }
