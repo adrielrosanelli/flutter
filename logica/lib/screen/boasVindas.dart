@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logica/component/appController.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:logica/screen/tela.dart';
 
@@ -19,6 +20,15 @@ class _BoasVindasState extends State<BoasVindas> {
   String image;
   File _image;
   String fonte;
+  String minhaUrl;
+  _launchURL() async {
+  var url = minhaUrl;
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   Future getImage() async {
     if (fonte == 'gallery') {
@@ -219,9 +229,47 @@ class _BoasVindasState extends State<BoasVindas> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() {}),
-        tooltip: 'Increment Counter',
-        child: Icon(Icons.add),
+        onPressed: () => setState(() {
+          showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: new Text('Sobre'),
+                        content:Container(
+                          height: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          children:[
+                            GestureDetector(onTap:(){
+                              minhaUrl = "https://github.com/adrielrosanelli/flutter";
+                              _launchURL();
+                            },
+                            child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset('lib/assets/git.png'),
+                                  Text('Meu Perfil', textAlign: TextAlign.end,)
+                                ],
+                              ),
+                            ),
+                            Divider(height: 30,),
+                            GestureDetector(onTap:(){
+                              },
+                              child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset('lib/assets/git.png'),
+                                  Text('   Repositório ')
+                                ],
+                              ),
+                            ),
+                            ]
+                          ),
+                        ), );
+                  });
+        }),
+        tooltip: 'Sobre',
+        child: Icon(Icons.grade),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
