@@ -8,12 +8,8 @@ class Apresentacao extends StatefulWidget {
   @override
   _ApresentacaoState createState() => _ApresentacaoState();
 }
-
-class _ApresentacaoState extends State<Apresentacao> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
+Widget _appBar(context){
+return AppBar(
             backgroundColor: Color.fromRGBO(100, 100, 100, 0),
             elevation: 0,
             leading: FlatButton(onPressed: (){
@@ -29,7 +25,14 @@ class _ApresentacaoState extends State<Apresentacao> {
                     }
                   },
                   child: Icon(Icons.brightness_medium)),
-            ]),
+            ]);
+}
+
+class _ApresentacaoState extends State<Apresentacao> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: _appBar(context),
         body: Container(
           child: SingleChildScrollView(
                       child: Column(

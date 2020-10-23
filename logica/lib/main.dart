@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutterado',
           theme: ThemeData(
-            primarySwatch: Colors.purple,
+            primarySwatch: Colors.blue,
             brightness: AppController.instance.isDartTheme
                 ? Brightness.dark
                 : Brightness.light,
