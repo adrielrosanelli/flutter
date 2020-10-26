@@ -1,6 +1,6 @@
 # logica
 
-A new Flutter project.
+Projeto focado em teste de componentes, layout e funcionalidades
 
 ## Getting Started
 
