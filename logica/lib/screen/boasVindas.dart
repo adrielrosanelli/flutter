@@ -21,14 +21,16 @@ class _BoasVindasState extends State<BoasVindas> {
   File _image;
   String fonte;
   String minhaUrl;
-  _launchURL() async {
-  var url = minhaUrl;
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+
+  Future<void> _launchURL() async {
+    var url = minhaUrl;
+
+    if (await canLaunch(url)) {
+      await launch(url, forceWebView: true, enableJavaScript: true);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   Future getImage() async {
     if (fonte == 'gallery') {
@@ -164,46 +166,64 @@ class _BoasVindasState extends State<BoasVindas> {
 
 // Drawer
   Widget _drawer() {
-    image = 'a';
     return Drawer(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(7, 30, 10, 0),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: new Text('Trocar a sua Foto?'),
-                        actions: [
-                          FlatButton(child: Icon(Icons.image),onPressed: (){
-                                  setState(() {
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: new Text('Trocar a sua Foto?'),
+                          actions: [
+                            FlatButton(
+                              child: Icon(Icons.image),
+                              onPressed: () {
+                                setState(() {
                                   fonte = 'gallery';
                                   getImage();
                                   Navigator.of(context).pop();
-                                  });
-                                },),
-                                FlatButton(child: Icon(Icons.camera_alt),onPressed: (){
-                                  setState(() {
+                                });
+                              },
+                            ),
+                            FlatButton(
+                              child: Icon(Icons.camera_alt),
+                              onPressed: () {
+                                setState(() {
                                   fonte = 'camera';
                                   getImage();
                                   Navigator.of(context).pop();
-                                  });
-                                },)
-                        ],
+                                });
+                              },
+                            )
+                          ],
                         );
-                  });
+                      });
                 },
                 child: Row(children: [
-                  CircleAvatar(
-                    backgroundImage: _image == null ? NetworkImage('https://dummyimage.com/600x400/2462d6/c7c9e3&text=+') : FileImage(_image),
-                    child: _image == null ? Icon(Icons.add): Image.file(_image,color: Color.fromRGBO(1, 1, 1, 0),),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundImage: _image == null
+                          ? NetworkImage(
+                              'https://dummyimage.com/600x400/2462d6/c7c9e3&text=+')
+                          : FileImage(_image),
+                      child: _image == null
+                          ? Icon(Icons.add)
+                          : Image.file(
+                              _image,
+                              color: Color.fromRGBO(1, 1, 1, 0),
+                            ),
+                    ),
                   ),
-                  Text('${widget._nome} ${widget._sobrenome}'),
+                  Text(
+                    '${widget._nome} ${widget._sobrenome}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 ]),
               ),
             ),
@@ -211,6 +231,45 @@ class _BoasVindasState extends State<BoasVindas> {
           Divider(
             height: 10,
           ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Apresentacao()));
+                },
+                child: Row(
+                  children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.logout, color: Colors.blue,),
+                  ),
+                  Text("Desconectar",style: TextStyle(
+                    color: Colors.blue
+                  ),)
+
+                ]),
+              )),
+              Divider(height:10),
+              Padding(
+              padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
+              child: GestureDetector(
+                onTap: () {
+                  
+                },
+                child: Row(
+                  children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.book,
+                    color: Colors.blue,),
+                  ),
+                  Text("Pedidos",style: TextStyle(
+                    color: Colors.blue
+                  ),)
+
+                ]),
+              ))
         ],
       ),
     );
@@ -231,48 +290,57 @@ class _BoasVindasState extends State<BoasVindas> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() {
           showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: new Text('Sobre'),
-                        content:Container(
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                          children:[
-                            GestureDetector(onTap:(){
-                              minhaUrl = "https://github.com/adrielrosanelli/flutter";
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: new Text('Sobre'),
+                  content: Container(
+                    height: 100,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              minhaUrl = "https://github.com/adrielrosanelli";
                               _launchURL();
                             },
                             child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset('lib/assets/git.png'),
-                                  Text('Meu Perfil', textAlign: TextAlign.end,)
-                                ],
-                              ),
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('lib/assets/git.png'),
+                                Text(
+                                  '   Meu Perfil',
+                                  textAlign: TextAlign.end,
+                                )
+                              ],
                             ),
-                            Divider(height: 30,),
-                            GestureDetector(onTap:(){
-                              },
-                              child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset('lib/assets/git.png'),
-                                  Text('   Repositório ')
-                                ],
-                              ),
-                            ),
-                            ]
                           ),
-                        ), );
-                  });
+                          Divider(
+                            height: 30,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              minhaUrl =
+                                  "https://github.com/adrielrosanelli/flutter";
+                              _launchURL();
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('lib/assets/git.png'),
+                                Text('   Repositório ')
+                              ],
+                            ),
+                          ),
+                        ]),
+                  ),
+                );
+              });
         }),
         tooltip: 'Sobre',
         child: Icon(Icons.grade),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
     );
   }
 }
