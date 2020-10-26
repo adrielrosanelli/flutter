@@ -56,10 +56,7 @@ class _BoasVindasState extends State<BoasVindas> {
       print('Ao lançar $message');
       setState(() => _message = message['notification']['body']);
       return;
-    },onBackgroundMessage: (Map<String, dynamic> message)async{
-      print('pelas costas $message');
-    }
-    );
+    },);
   }
 
   // Permite a leitura de URL
