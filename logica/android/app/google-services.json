@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "588578824152",
+    "firebase_url": "https://mensagens-desmotivacionais.firebaseio.com",
+    "project_id": "mensagens-desmotivacionais",
+    "storage_bucket": "mensagens-desmotivacionais.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588578824152:android:061c676e3e1d855fe49cad",
+        "android_client_info": {
+          "package_name": "br.com.codefirst.Mensagens_Desmotivacionais"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588578824152-fkek84ve2rc0k461h6goeg2jdas1mhd3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzW2w37NDN9mjLFMd-WsqLpOtE--SXXhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588578824152-fkek84ve2rc0k461h6goeg2jdas1mhd3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

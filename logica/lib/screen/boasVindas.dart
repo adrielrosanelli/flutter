@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logica/component/appController.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:logica/screen/tela.dart';
 
@@ -17,11 +18,51 @@ class BoasVindas extends StatefulWidget {
 }
 
 class _BoasVindasState extends State<BoasVindas> {
+  // get_image
   String image;
   File _image;
   String fonte;
+
+  // _lauchURL
   String minhaUrl;
 
+  // _fireBaseMessaging
+  final FirebaseMessaging _fireBaseMessaging = FirebaseMessaging();
+  String _message = '';
+
+  _registerOnFirebase() {
+    _fireBaseMessaging.subscribeToTopic('all');
+    _fireBaseMessaging.getToken().then((token) => print(token));
+  }
+
+// Inicia os metodos
+  @override
+  void initState() {
+    _registerOnFirebase();
+    getMessage();
+    super.initState();
+  }
+
+  void getMessage() {
+    _fireBaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      print('Mensagem Recebida');
+      return;
+    }, onResume: (Map<String, dynamic> message) async {
+      print('on resume $message');
+      setState(() => _message = message['notification']['body']);
+      return;
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print('Ao lançar $message');
+      setState(() => _message = message['notification']['body']);
+      return;
+    },onBackgroundMessage: (Map<String, dynamic> message)async{
+      print('pelas costas $message');
+    }
+    );
+  }
+
+  // Permite a leitura de URL
   Future<void> _launchURL() async {
     var url = minhaUrl;
 
@@ -32,6 +73,7 @@ class _BoasVindasState extends State<BoasVindas> {
     }
   }
 
+  // Busca a imagem na galeria ou tira a foto.
   Future getImage() async {
     if (fonte == 'gallery') {
       var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -48,7 +90,7 @@ class _BoasVindasState extends State<BoasVindas> {
     }
   }
 
-// AppBar
+  // AppBar
   Widget _appBar(context) {
     return AppBar(
       title: Text('${widget._nome} ${widget._sobrenome}'),
@@ -92,79 +134,23 @@ class _BoasVindasState extends State<BoasVindas> {
     );
   }
 
-// Body
+  // Body
   Widget _body() {
     return Center(
-      child: GridView.count(
+      child: ListView(
         primary: false,
         padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 2,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.all(8),
-            child: FlatButton(
-                onPressed: () {
-                  fonte = "gallery";
-                  getImage();
-                },
-                child: Icon(
-                  Icons.image,
-                  size: 50,
-                )),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: FlatButton(
-                onPressed: () {
-                  fonte = "picture";
-                  getImage();
-                },
-                child: Icon(
-                  Icons.camera_alt,
-                  size: 50,
-                  color: Colors.white,
-                )),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Sound of screams but the'),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Who scream'),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution is coming...'),
-            color: Color(0xfff18A86F),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Text('Revolution, they...'),
-            color: Color(0xfff18A86F),
-          ),
+              child: Center(
+            child: Text("Mensagem = $_message"),
+          ))
         ],
       ),
     );
   }
 
-// Drawer
+  // Drawer
   Widget _drawer() {
     return Drawer(
       child: Column(
@@ -209,8 +195,7 @@ class _BoasVindasState extends State<BoasVindas> {
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
                       backgroundImage: _image == null
-                          ? NetworkImage(
-                              'https://dummyimage.com/600x400/2462d6/c7c9e3&text=+')
+                          ? NetworkImage('https://placeimg.com/640/480/any')
                           : FileImage(_image),
                       child: _image == null
                           ? Icon(Icons.add)
@@ -238,36 +223,37 @@ class _BoasVindasState extends State<BoasVindas> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Apresentacao()));
                 },
-                child: Row(
-                  children: [
+                child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.logout, color: Colors.blue,),
+                    child: Icon(
+                      Icons.logout,
+                      color: Colors.blue,
+                    ),
                   ),
-                  Text("Desconectar",style: TextStyle(
-                    color: Colors.blue
-                  ),)
-
+                  Text(
+                    "Desconectar",
+                    style: TextStyle(color: Colors.blue),
+                  )
                 ]),
               )),
-              Divider(height:10),
-              Padding(
+          Divider(height: 10),
+          Padding(
               padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
               child: GestureDetector(
-                onTap: () {
-                  
-                },
-                child: Row(
-                  children: [
+                onTap: () {},
+                child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Icon(Icons.book,
-                    color: Colors.blue,),
+                    child: Icon(
+                      Icons.book,
+                      color: Colors.blue,
+                    ),
                   ),
-                  Text("Pedidos",style: TextStyle(
-                    color: Colors.blue
-                  ),)
-
+                  Text(
+                    "Pedidos",
+                    style: TextStyle(color: Colors.blue),
+                  )
                 ]),
               ))
         ],
