@@ -37,7 +37,7 @@ class _ApresentacaoState extends State<Apresentacao> {
           child: SingleChildScrollView(
                       child: Column(
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.only(top:70),
+                  Padding(padding: EdgeInsets.only(top:30),
                   child: 
                   EntradaDados()
                   ,)

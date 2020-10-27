@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:logica/component/appController.dart';
 import 'package:logica/screen/tela.dart';
 import 'package:flutter/services.dart';
 
@@ -17,15 +19,22 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
     void _submit() {
     formkey.currentState.save();
-    Navigator.pushReplacement(context,
+    Navigator.push
+    (context,
         MaterialPageRoute(builder: (context) => Apresentacao()));
     // Navigator.of(context).pushNamed('/home');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: ListView(
+    return Scaffold(
+      appBar: _appBar(context),
+      body: _body()
+    );
+  }
+  // TODO Body
+  Widget _body(){
+    return ListView(
               children: [
           Form(
             key:formkey,
@@ -143,7 +152,36 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
 
           ],
         )),
-      ]),
-    );
+      ]);
   }
+
+// TODO Appbar
+Widget _appBar(context){
+  return AppBar(
+    title: AutoSizeText(
+                    'Cadastro de Usuário',
+                    minFontSize: 20,
+                    maxFontSize: 80,
+                    maxLines: 1,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: 80,
+                    ),),
+    actions: [
+      FlatButton(
+          onPressed: () {
+            if (AppController.instance.isDartTheme == false) {
+              AppController.instance.changeTheme();
+            } else if (AppController.instance.isDartTheme != false) {
+              AppController.instance.changeTheme();
+            }
+          },
+          child: Icon(
+            Icons.brightness_medium,
+            color: Colors.white,
+          ),
+        ),
+    ],
+  );
+}
 }
