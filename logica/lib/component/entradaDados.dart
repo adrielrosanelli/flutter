@@ -1,23 +1,61 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logica/screen/boasVindas.dart';
 import 'package:logica/screen/cadastroUsuario.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EntradaDados extends StatefulWidget {
+
   @override
   _EntradaDadosState createState() => _EntradaDadosState();
 }
 
 class _EntradaDadosState extends State<EntradaDados> {
   final formkey = GlobalKey<FormState>();
-  String _nome = '', _sobrenome = '';
+  String nome ='', sobrenome='', _nomeSalvo,_sobrenomeSalvo;
   var _obscureText = true;
+  bool _checkBox = false;
+  var _recuperaValor;
+
+_write(String text) async {
+  final Directory directory = await getApplicationDocumentsDirectory();
+  final File file = File('${directory.path}/usuario.txt');
+  await file.writeAsString(text);
+}
+Future<String> _read() async {
+  String text;
+  try {
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/usuario.txt');
+    text = await file.readAsString();
+    _recuperaValor = text.split(" ");
+    setState(() {
+    nome = _recuperaValor[0];
+    sobrenome = _recuperaValor[1];
+    print(nome);
+    print(sobrenome);
+    
+    nome !=null && sobrenome !=null ?  Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new BoasVindas(nome,sobrenome))) : print('Usuario ou senha invalido(s)');
+    });
+  } catch (e) {
+    print("Couldn't read file");
+  }
+  
+  return text;
+}
+@override
+void initState() {
+    _read();
+    
+    super.initState();
+  }
+
 
   void _submit() {
     formkey.currentState.save();
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => BoasVindas(_nome, _sobrenome)));
-    // Navigator.of(context).pushNamed('/home');
+    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new BoasVindas(nome,sobrenome)));
   }
 
   @override
@@ -58,9 +96,13 @@ class _EntradaDadosState extends State<EntradaDados> {
                           return null;
                         },
                         textInputAction: TextInputAction.next,
+                        onChanged: (value){setState(() {
+                        nome = value;
+                      });},
                         onSaved: (input) {
-                          _nome = input;
+                          nome = input;
                         }),
+                        
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -93,33 +135,67 @@ class _EntradaDadosState extends State<EntradaDados> {
                           _submit();
                         }
                       },
-                      onSaved: (input) => _sobrenome = input,
+                      onChanged: (value){setState(() {
+                        sobrenome = value;
+                      });},
+                      onSaved: (input) => sobrenome = input,
                     ),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: RaisedButton(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: FlatButton(
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CadastroUsuario()));
                           },
-                          color: Colors.blue,
-                          child: Text('Cadastrar-se', style: TextStyle(color: Colors.white),),
+                          child: Text('Cadastrar-se', style: TextStyle(color: Colors.blue, fontSize: 17),),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right:20),
+                        child: Row(
+                          children: [
+                            Checkbox(value: _checkBox, onChanged: (value){
+                              setState(() {
+                              _checkBox = !_checkBox;
+                              if(_checkBox == true){
+
+                              _write('$nome $sobrenome');
+                              _read();
+                              }
+                              
+                              });
+                            }),
+                            Text('Lembrar senha')
+                          ],
                         ),
                       )
                     ],
                   ),
-                  FloatingActionButton(
-                      onPressed: () {
-                        if (formkey.currentState.validate()) {
-                          _submit();
-                        }
-                      },
-                      child: Icon(Icons.login))
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton(
+                        textColor: Colors.white,
+                        color: Colors.blue,
+                            onPressed: () {
+                              if (formkey.currentState.validate()) {
+                                _submit();
+                              }
+                            },
+                            child: Text('Entrar')),
+                    ),
+                  ),
+                  FlatButton(onPressed: (){
+                    print('teste');
+                  }, child: Text('Esqueci a senha'))
                 ])));
   }
 }

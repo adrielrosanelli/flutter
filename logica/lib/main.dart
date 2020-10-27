@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
+import 'package:logica/screen/boasVindas.dart';
 import 'package:logica/screen/cadastroUsuario.dart';
 import './screen/tela.dart';
 void main() {
@@ -24,12 +25,10 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: Apresentacao(),
-          initialRoute: '/',
-          routes: {
-            // '/': (context)=> Apresentacao(),
-            // '/home': (context)=> BoasVindas('oi','ola'),
-          },
-        
+        // initialRoute: '/',
+        // routes: {
+        //   '/' :(context) => Apresentacao(),
+        // },
         );
       },
     );

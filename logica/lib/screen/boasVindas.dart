@@ -4,14 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logica/component/appController.dart';
+import 'package:logica/component/entradaDados.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:logica/screen/tela.dart';
 
 class BoasVindas extends StatefulWidget {
-  String _nome, _sobrenome;
-  BoasVindas(this._nome, this._sobrenome);
+  String nome, sobrenome;
+  BoasVindas(this.nome, this.sobrenome);
 
   @override
   _BoasVindasState createState() => _BoasVindasState();
@@ -25,39 +26,13 @@ class _BoasVindasState extends State<BoasVindas> {
 
   // _lauchURL
   String minhaUrl;
+  
+  void main() async{
+      final Directory directory = await getApplicationDocumentsDirectory();
+  final File file = File('${directory.path}/usuario.txt');
+    file.deleteSync(recursive: true);
+}
 
-  // _fireBaseMessaging
-  final FirebaseMessaging _fireBaseMessaging = FirebaseMessaging();
-  String _message = '';
-
-  _registerOnFirebase() {
-    _fireBaseMessaging.subscribeToTopic('all');
-    _fireBaseMessaging.getToken().then((token) => print(token));
-  }
-
-// Inicia os metodos
-  @override
-  void initState() {
-    _registerOnFirebase();
-    getMessage();
-    super.initState();
-  }
-
-  void getMessage() {
-    _fireBaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-      print('Mensagem Recebida');
-      return;
-    }, onResume: (Map<String, dynamic> message) async {
-      print('on resume $message');
-      setState(() => _message = message['notification']['body']);
-      return;
-    }, onLaunch: (Map<String, dynamic> message) async {
-      print('Ao lançar $message');
-      setState(() => _message = message['notification']['body']);
-      return;
-    },);
-  }
 
   // Permite a leitura de URL
   Future<void> _launchURL() async {
@@ -90,7 +65,8 @@ class _BoasVindasState extends State<BoasVindas> {
   // AppBar
   Widget _appBar(context) {
     return AppBar(
-      title: Text('${widget._nome} ${widget._sobrenome}'),
+      // TODO Passar biblioteca que diminui a escrita para caber mais caracteres
+      title: Text('${widget.nome} ${widget.sobrenome}'),
       actions: <Widget>[
         FlatButton(
           onPressed: () {
@@ -105,28 +81,6 @@ class _BoasVindasState extends State<BoasVindas> {
             color: Colors.white,
           ),
         ),
-        IconButton(
-            icon: Icon(Icons.logout),
-            tooltip: 'Sair',
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: new Text('Deseja Continuar?'),
-                        content: new Text('Tem certeza que deseja Sair?'),
-                        actions: [
-                          new FloatingActionButton(
-                              child: new Text('Sair'),
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Apresentacao()));
-                              })
-                        ]);
-                  });
-            }),
       ],
     );
   }
@@ -134,15 +88,11 @@ class _BoasVindasState extends State<BoasVindas> {
   // Body
   Widget _body() {
     return Center(
-      child: ListView(
-        primary: false,
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          Container(
-              child: Center(
-            child: Text("Mensagem = $_message"),
-          ))
-        ],
+      child: Container(
+        child: Container(
+            child: Center(
+          child: Text("Mensagem = Teste"),
+        )),
       ),
     );
   }
@@ -192,7 +142,7 @@ class _BoasVindasState extends State<BoasVindas> {
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
                       backgroundImage: _image == null
-                          ? NetworkImage('https://placeimg.com/640/480/any')
+                          ? NetworkImage('https://placeimg.com/640/480/people')
                           : FileImage(_image),
                       child: _image == null
                           ? Icon(Icons.add)
@@ -203,7 +153,7 @@ class _BoasVindasState extends State<BoasVindas> {
                     ),
                   ),
                   Text(
-                    '${widget._nome} ${widget._sobrenome}',
+                    '${widget.nome} ${widget.sobrenome}',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ]),
@@ -217,9 +167,13 @@ class _BoasVindasState extends State<BoasVindas> {
               padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Apresentacao()));
-                },
+                  main();
+                  Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Apresentacao()));
+                //  Navigator.pushNamed(context, '/');
+                 },
                 child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),

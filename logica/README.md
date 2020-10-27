@@ -8,8 +8,10 @@ Projeto focado em teste de componentes, layout e funcionalidades
 [X]Validação do e-mail;
 [X]Criação do formulario de cadastro;
 []Criação do banco de dados(firebase);
-    []Login Automático,
-        []Login Offline,
+    [X]Login Automático,
+        [X]Login Offline,
+
+[X]Melhorar Tela Login
 
 
 
