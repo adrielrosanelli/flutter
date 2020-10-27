@@ -5,57 +5,71 @@ import 'package:flutter/services.dart';
 import 'package:logica/screen/boasVindas.dart';
 import 'package:logica/screen/cadastroUsuario.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class EntradaDados extends StatefulWidget {
-
   @override
   _EntradaDadosState createState() => _EntradaDadosState();
 }
 
 class _EntradaDadosState extends State<EntradaDados> {
   final formkey = GlobalKey<FormState>();
-  String nome ='', sobrenome='', _nomeSalvo,_sobrenomeSalvo;
+  String email, senha;
   var _obscureText = true;
   bool _checkBox = false;
   var _recuperaValor;
 
-_write(String text) async {
-  final Directory directory = await getApplicationDocumentsDirectory();
-  final File file = File('${directory.path}/usuario.txt');
-  await file.writeAsString(text);
-}
-Future<String> _read() async {
-  String text;
-  try {
+  _write(String text) async {
     final Directory directory = await getApplicationDocumentsDirectory();
     final File file = File('${directory.path}/usuario.txt');
-    text = await file.readAsString();
-    _recuperaValor = text.split(" ");
-    setState(() {
-    nome = _recuperaValor[0];
-    sobrenome = _recuperaValor[1];
-    print(nome);
-    print(sobrenome);
-    
-    nome !=null && sobrenome !=null ?  Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new BoasVindas(nome,sobrenome))) : print('Usuario ou senha invalido(s)');
-    });
-  } catch (e) {
-    print("Couldn't read file");
+    await file.writeAsString(text);
   }
-  
-  return text;
-}
-@override
-void initState() {
+
+  Future<String> _read() async {
+    String text;
+    try {
+      final Directory directory = await getApplicationDocumentsDirectory();
+      final File file = File('${directory.path}/usuario.txt');
+      text = await file.readAsString();
+      setState(() {
+      _recuperaValor = text.split(" ");
+        email = _recuperaValor[0].toString();
+        senha = _recuperaValor[1].toString();
+        print(email);
+      print(senha);
+        email.isNotEmpty && senha.isNotEmpty
+            ? _submit()
+            : print('Usuario ou senha invalido(s)');
+      });
+
+    } catch (e) {
+      print("Couldn't read file");
+    }
+
+    return text;
+  }
+
+  @override
+  void initState() {
     _read();
-    
     super.initState();
   }
 
-
-  void _submit() {
+  // Envia as informações de login
+  Future<void> _submit() async {
+    await Firebase.initializeApp();
     formkey.currentState.save();
-    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new BoasVindas(nome,sobrenome)));
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: senha);
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (BuildContext context) => new BoasVindas(email)));
+    } catch (e) {
+      print(e.message);
+    }
   }
 
   @override
@@ -96,13 +110,14 @@ void initState() {
                           return null;
                         },
                         textInputAction: TextInputAction.next,
-                        onChanged: (value){setState(() {
-                        nome = value;
-                      });},
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
                         onSaved: (input) {
-                          nome = input;
+                          email = input;
                         }),
-                        
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -135,10 +150,12 @@ void initState() {
                           _submit();
                         }
                       },
-                      onChanged: (value){setState(() {
-                        sobrenome = value;
-                      });},
-                      onSaved: (input) => sobrenome = input,
+                      onChanged: (value) {
+                        setState(() {
+                          senha = value;
+                        });
+                      },
+                      onSaved: (input) => senha = input,
                     ),
                   ),
                   Row(
@@ -153,24 +170,27 @@ void initState() {
                                 MaterialPageRoute(
                                     builder: (context) => CadastroUsuario()));
                           },
-                          child: Text('Cadastrar-se', style: TextStyle(color: Colors.blue, fontSize: 17),),
+                          child: Text(
+                            'Cadastrar-se',
+                            style: TextStyle(color: Colors.blue, fontSize: 17),
+                          ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right:20),
+                        padding: const EdgeInsets.only(right: 20),
                         child: Row(
                           children: [
-                            Checkbox(value: _checkBox, onChanged: (value){
-                              setState(() {
-                              _checkBox = !_checkBox;
-                              if(_checkBox == true){
-
-                              _write('$nome $sobrenome');
-                              _read();
-                              }
-                              
-                              });
-                            }),
+                            Checkbox(
+                                value: _checkBox,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _checkBox = !_checkBox;
+                                    if (_checkBox == true) {
+                                      _write('$email $senha');
+                                      _read();
+                                    }
+                                  });
+                                }),
                             Text('Lembrar senha')
                           ],
                         ),
@@ -183,19 +203,21 @@ void initState() {
                       height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton(
-                        textColor: Colors.white,
-                        color: Colors.blue,
-                            onPressed: () {
-                              if (formkey.currentState.validate()) {
-                                _submit();
-                              }
-                            },
-                            child: Text('Entrar')),
+                          textColor: Colors.white,
+                          color: Colors.blue,
+                          onPressed: () {
+                            if (formkey.currentState.validate()) {
+                              _submit();
+                            }
+                          },
+                          child: Text('Entrar')),
                     ),
                   ),
-                  FlatButton(onPressed: (){
-                    print('teste');
-                  }, child: Text('Esqueci a senha'))
+                  FlatButton(
+                      onPressed: () {
+                        print('teste');
+                      },
+                      child: Text('Esqueci a senha'))
                 ])));
   }
 }

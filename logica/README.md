@@ -15,3 +15,7 @@ Projeto focado em teste de componentes, layout e funcionalidades
 
 
 
+Comandos de atualização de repositório:
+flutter clean - Limpa as dependências
+flutter packages get - baixa e instala as dependências
+flutter pub upgrade - atualiza as dependências

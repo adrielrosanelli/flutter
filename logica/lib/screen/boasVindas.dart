@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,8 +12,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:logica/screen/tela.dart';
 
 class BoasVindas extends StatefulWidget {
-  String nome, sobrenome;
-  BoasVindas(this.nome, this.sobrenome);
+  String email;
+  BoasVindas(this.email);
 
   @override
   _BoasVindasState createState() => _BoasVindasState();
@@ -26,13 +27,12 @@ class _BoasVindasState extends State<BoasVindas> {
 
   // _lauchURL
   String minhaUrl;
-  
-  void main() async{
-      final Directory directory = await getApplicationDocumentsDirectory();
-  final File file = File('${directory.path}/usuario.txt');
-    file.deleteSync(recursive: true);
-}
 
+  void main() async {
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final File file = File('${directory.path}/usuario.txt');
+    file.deleteSync(recursive: true);
+  }
 
   // Permite a leitura de URL
   Future<void> _launchURL() async {
@@ -66,7 +66,15 @@ class _BoasVindasState extends State<BoasVindas> {
   Widget _appBar(context) {
     return AppBar(
       // TODO Passar biblioteca que diminui a escrita para caber mais caracteres
-      title: Text('${widget.nome} ${widget.sobrenome}'),
+      title: AutoSizeText(
+        '${widget.email}',
+        minFontSize: 10,
+        maxFontSize: 80,
+        maxLines: 1,
+        style: TextStyle(
+          fontSize: 80,
+        ),
+      ),
       actions: <Widget>[
         FlatButton(
           onPressed: () {
@@ -152,9 +160,14 @@ class _BoasVindasState extends State<BoasVindas> {
                             ),
                     ),
                   ),
-                  Text(
-                    '${widget.nome} ${widget.sobrenome}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  AutoSizeText(
+                    '${widget.email}',
+                    minFontSize: 5,
+                    maxFontSize: 15,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 80,
+                    ),
                   ),
                 ]),
               ),
@@ -168,12 +181,10 @@ class _BoasVindasState extends State<BoasVindas> {
               child: GestureDetector(
                 onTap: () {
                   main();
-                  Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Apresentacao()));
-                //  Navigator.pushNamed(context, '/');
-                 },
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Apresentacao()));
+                  //  Navigator.pushNamed(context, '/');
+                },
                 child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),

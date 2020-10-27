@@ -21,8 +21,6 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-
-  firebase_messaging:
   image_picker: ^0.6.7+12
   qr_code_scanner:
   url_launcher:
@@ -31,6 +29,7 @@ dependencies:
   flutter:
     sdk: flutter
   auto_size_text:
+  firebase_auth:
 
 
   # The following adds the Cupertino Icons font to your application.
