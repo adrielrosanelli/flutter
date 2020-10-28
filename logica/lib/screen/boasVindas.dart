@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logica/component/appController.dart';
 import 'package:logica/component/entradaDados.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:logica/screen/tela.dart';
@@ -27,11 +28,12 @@ class _BoasVindasState extends State<BoasVindas> {
 
   // _lauchURL
   String minhaUrl;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  _write(String text)async{
+  
+  SharedPreferences pref = await _prefs;
+  await pref.setStringList('text', ['','']);
 
-  void main() async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final File file = File('${directory.path}/usuario.txt');
-    file.deleteSync(recursive: true);
   }
 
   // Permite a leitura de URL
@@ -65,7 +67,6 @@ class _BoasVindasState extends State<BoasVindas> {
   // AppBar
   Widget _appBar(context) {
     return AppBar(
-      // TODO Passar biblioteca que diminui a escrita para caber mais caracteres
       title: AutoSizeText(
         '${widget.email}',
         minFontSize: 10,
@@ -180,7 +181,7 @@ class _BoasVindasState extends State<BoasVindas> {
               padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
               child: GestureDetector(
                 onTap: () {
-                  main();
+                  _write('');
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Apresentacao()));
                   //  Navigator.pushNamed(context, '/');

@@ -1,12 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logica/screen/boasVindas.dart';
 import 'package:logica/screen/cadastroUsuario.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EntradaDados extends StatefulWidget {
   @override
@@ -16,42 +15,34 @@ class EntradaDados extends StatefulWidget {
 class _EntradaDadosState extends State<EntradaDados> {
   final formkey = GlobalKey<FormState>();
   String email, senha;
+  String emailSalvo, senhaSalva;
   var _obscureText = true;
   bool _checkBox = false;
-  var _recuperaValor;
 
-  _write(String text) async {
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final File file = File('${directory.path}/usuario.txt');
-    await file.writeAsString(text);
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+
+  _write(String text)async{
+  SharedPreferences pref = await _prefs;
+  await pref.setStringList('text', ['$email','$senha']);
+
+  }
+  _read() async{
+  SharedPreferences pref = await _prefs;
+  final login = pref.getStringList('text')??[];
+  print(login[0]);
+  print(login[1]);
+  email = login[0];
+  senha = login[1];
+  email.isNotEmpty && senha.isNotEmpty ?
+  Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => new BoasVindas(email)))
+  : print('Usuario ou senha invalido(s)');
   }
 
-  Future<String> _read() async {
-    String text;
-    try {
-      final Directory directory = await getApplicationDocumentsDirectory();
-      final File file = File('${directory.path}/usuario.txt');
-      text = await file.readAsString();
-      setState(() {
-      _recuperaValor = text.split(" ");
-        email = _recuperaValor[0].toString();
-        senha = _recuperaValor[1].toString();
-        print(email);
-      print(senha);
-        email.isNotEmpty && senha.isNotEmpty
-            ? _submit()
-            : print('Usuario ou senha invalido(s)');
-      });
-
-    } catch (e) {
-      print("Couldn't read file");
-    }
-
-    return text;
-  }
 
   @override
   void initState() {
+
     _read();
     super.initState();
   }

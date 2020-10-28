@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  shared_preferences:
   image_picker: ^0.6.7+12
   qr_code_scanner:
   url_launcher:
