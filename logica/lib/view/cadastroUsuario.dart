@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:logica/component/appController.dart';
-import 'package:logica/screen/tela.dart';
+import 'package:logica/view/tela.dart';
 import 'package:flutter/services.dart';
 
 class CadastroUsuario extends StatefulWidget {

@@ -9,32 +9,28 @@ import 'package:logica/model/usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:logica/screen/tela.dart';
+import 'package:logica/view/tela.dart';
 
 class BoasVindas extends StatefulWidget {
-  BoasVindas(this.email);
-  UserModel user = UserModel();
-  String email;
-
   @override
   _BoasVindasState createState() => _BoasVindasState();
 }
 
 class _BoasVindasState extends State<BoasVindas> {
+  UserModel user = UserModel();
+
   // get_image
   String image;
   File _image;
   String fonte;
+  @override
+  void initState() {
+    print(user.email);
+    super.initState();
+  }
 
   // _lauchURL
   String minhaUrl;
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  _write(String text)async{
-  
-  SharedPreferences pref = await _prefs;
-  await pref.setStringList('text', ['','']);
-
-  }
 
   // Permite a leitura de URL
   Future<void> _launchURL() async {
@@ -68,7 +64,7 @@ class _BoasVindasState extends State<BoasVindas> {
   Widget _appBar(context) {
     return AppBar(
       title: AutoSizeText(
-        'email',
+        '${user.email}',
         minFontSize: 10,
         maxFontSize: 80,
         maxLines: 1,
@@ -162,7 +158,7 @@ class _BoasVindasState extends State<BoasVindas> {
                     ),
                   ),
                   AutoSizeText(
-                    '${widget.email}',
+                    '${user.email}',
                     minFontSize: 5,
                     maxFontSize: 15,
                     maxLines: 1,
@@ -181,10 +177,9 @@ class _BoasVindasState extends State<BoasVindas> {
               padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
               child: GestureDetector(
                 onTap: () {
-                  _write('');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Apresentacao()));
-                  //  Navigator.pushNamed(context, '/');
+                  user.email = '';
+
+                  Navigator.pushNamed(context, '/');
                 },
                 child: Row(children: [
                   Padding(
