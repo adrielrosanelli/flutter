@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:logica/component/entradaDados.dart';
+import 'package:logica/model/usuario.dart';
+import 'package:logica/screen/tela.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrCode extends StatefulWidget {
@@ -7,12 +10,16 @@ class QrCode extends StatefulWidget {
 }
 
 class _QrCodeState extends State<QrCode> {
+
+  UserModel user = UserModel();
+
+
   GlobalKey qrKey = GlobalKey();
   String qrText = "";
 
   QRViewController controller;
-  String _nome;
-  String _sobrenome;
+  String email;
+  String senha;
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +44,8 @@ class _QrCodeState extends State<QrCode> {
                   onQRViewCreated: _onQRViewCreate),
             ),
             Text('Scan result: $qrText'),
-            Text('Nome: $_nome'),
-            Text('Sobrenome: $_sobrenome'),
+            Text('Nome: $email'),
+            Text('Sobrenome: $senha'),
           ],
         ),
       )
@@ -59,17 +66,17 @@ class _QrCodeState extends State<QrCode> {
 
         var teste = qrText.split(" ");
         print(teste);
-        _nome = teste[0];
-        _sobrenome = teste[1];
+        user.email = teste[0];
+        user.senha = teste[1];
 
         if(teste[0] != null && teste[1] != null){
-          print('Antes do sobrenome $_sobrenome');
+          print('Antes do sobrenome $senha');
         
         print('depois do sobrenome');
-        // Navigator.pushReplacement(
+        // Navigator.push(
         //     context,
         //     MaterialPageRoute(
-        //         builder: (context) => BoasVindas(_nome, _sobrenome)));
+        //         builder: (context) => Apresentacao(email,senha)));
 
         }else{
           print('reprovou no teste');

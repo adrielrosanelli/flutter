@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logica/model/usuario.dart';
 import 'package:logica/screen/boasVindas.dart';
 import 'package:logica/screen/cadastroUsuario.dart';
-// import 'package:path_provider/path_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,9 +13,9 @@ class EntradaDados extends StatefulWidget {
 }
 
 class _EntradaDadosState extends State<EntradaDados> {
+  UserModel user = UserModel();
   final formkey = GlobalKey<FormState>();
   String email, senha;
-  String emailSalvo, senhaSalva;
   var _obscureText = true;
   bool _checkBox = false;
 
@@ -53,7 +53,7 @@ class _EntradaDadosState extends State<EntradaDados> {
     formkey.currentState.save();
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: senha);
+          .signInWithEmailAndPassword(email: user.email, password: user.senha);
       Navigator.push(
           context,
           new MaterialPageRoute(
@@ -103,11 +103,11 @@ class _EntradaDadosState extends State<EntradaDados> {
                         textInputAction: TextInputAction.next,
                         onChanged: (value) {
                           setState(() {
-                            email = value;
+                            user.email = value;
                           });
                         },
                         onSaved: (input) {
-                          email = input;
+                          user.email = input;
                         }),
                   ),
                   Padding(
@@ -143,10 +143,10 @@ class _EntradaDadosState extends State<EntradaDados> {
                       },
                       onChanged: (value) {
                         setState(() {
-                          senha = value;
+                          user.senha = value;
                         });
                       },
-                      onSaved: (input) => senha = input,
+                      onSaved: (input) => user.senha = input,
                     ),
                   ),
                   Row(

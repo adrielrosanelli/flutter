@@ -5,16 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logica/component/appController.dart';
-import 'package:logica/component/entradaDados.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:logica/model/usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:logica/screen/tela.dart';
 
 class BoasVindas extends StatefulWidget {
-  String email;
   BoasVindas(this.email);
+  UserModel user = UserModel();
+  String email;
 
   @override
   _BoasVindasState createState() => _BoasVindasState();
@@ -68,7 +68,7 @@ class _BoasVindasState extends State<BoasVindas> {
   Widget _appBar(context) {
     return AppBar(
       title: AutoSizeText(
-        '${widget.email}',
+        'email',
         minFontSize: 10,
         maxFontSize: 80,
         maxLines: 1,
