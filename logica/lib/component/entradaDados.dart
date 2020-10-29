@@ -169,8 +169,14 @@ class _EntradaDadosState extends State<EntradaDados> {
                         onPressed: () async {
                           if (formkey.currentState.validate()) {
                             formkey.currentState.save();
-                            await user.doLogin();
-                            await Navigator.pushNamed(context, '/home');
+                            var tarso = await user.doLogin();
+                            tarso == true?
+                            await Navigator.pushNamed(context, '/home'):
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('E-mail ou Senha invalido(s)'),
+                              backgroundColor: Color(0xFFee5253),
+                            ));
+                            
                           }
                         },
                         child: Text('Entrar')),

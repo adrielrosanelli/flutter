@@ -11,7 +11,22 @@ Projeto focado em teste de componentes, layout e funcionalidades
     [X]Login Automático,  
         [X]Login Offline,  
 
-[X]Melhorar Tela Login
+[X]Melhorar Tela Login  
+[]Aplicar a View do MVC  
+    [X]Tela Login  
+    []Tela BoasVindas  
+    []Tela Cadastro  
+    []Qrcode  
+[]Aplicar o Model do MVC  
+    [X]Tela Login  
+    []Tela BoasVindas  
+    []Tela Cadastro  
+    []Qrcode  
+[]Aplicar o Controller do MVC  
+    []Tela Login  
+    []Tela BoasVindas  
+    []Tela Cadastro  
+    []Qrcode  
 
 
 
