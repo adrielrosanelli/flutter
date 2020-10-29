@@ -9,28 +9,38 @@ import 'package:logica/model/usuario.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:logica/view/tela.dart';
-
 class BoasVindas extends StatefulWidget {
+  
   @override
   _BoasVindasState createState() => _BoasVindasState();
 }
 
 class _BoasVindasState extends State<BoasVindas> {
   UserModel user = UserModel();
-
+  var email;
   // get_image
   String image;
   File _image;
   String fonte;
-  @override
-  void initState() {
-    print(user.email);
-    super.initState();
-  }
 
   // _lauchURL
   String minhaUrl;
+  
+  @override
+  void initState() {
+    valores();
+    super.initState();
+  }
+
+  Future valores()async{
+      email = user.read();
+    Future.delayed(Duration(milliseconds: 500),(){
+      setState(() {
+      email = user.email;
+        
+      });
+    } );
+  }
 
   // Permite a leitura de URL
   Future<void> _launchURL() async {
@@ -49,22 +59,28 @@ class _BoasVindasState extends State<BoasVindas> {
       var image = await ImagePicker.pickImage(source: ImageSource.gallery);
       setState(() {
         _image = image;
-        print('_image: $_image');
+
       });
     } else {
       var image = await ImagePicker.pickImage(source: ImageSource.camera);
       setState(() {
         _image = image;
-        print('_image: $_image');
+
       });
     }
   }
 
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+ Future _write(String text) async {
+    SharedPreferences pref = await _prefs;
+    pref.setStringList('text', ['', '']);
+  }
+
   // AppBar
-  Widget _appBar(context) {
+  Widget appBar(context) {
     return AppBar(
       title: AutoSizeText(
-        '${user.email}',
+        '$email',
         minFontSize: 10,
         maxFontSize: 80,
         maxLines: 1,
@@ -91,7 +107,7 @@ class _BoasVindasState extends State<BoasVindas> {
   }
 
   // Body
-  Widget _body() {
+  Widget body() {
     return Center(
       child: Container(
         child: Container(
@@ -103,7 +119,7 @@ class _BoasVindasState extends State<BoasVindas> {
   }
 
   // Drawer
-  Widget _drawer() {
+  Widget drawer() {
     return Drawer(
       child: Column(
         children: [
@@ -177,7 +193,9 @@ class _BoasVindasState extends State<BoasVindas> {
               padding: const EdgeInsets.fromLTRB(7, 0, 10, 0),
               child: GestureDetector(
                 onTap: () {
-                  user.email = '';
+                  setState(() {
+                  _write('');
+                  });
 
                   Navigator.pushNamed(context, '/');
                 },
@@ -219,18 +237,26 @@ class _BoasVindasState extends State<BoasVindas> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: _drawer(),
-      appBar: _appBar(context),
-      body: _body(),
-      bottomNavigationBar: BottomAppBar(
+  Widget bottomNavigationBar(){
+    return BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
           height: 50.0,
         ),
-      ),
+      );
+      
+  }
+  @override
+  Widget build(BuildContext context) {
+    return scafold();
+  }
+
+  Widget scafold(){
+    return Scaffold(
+      drawer: drawer(),
+      appBar: appBar(context),
+      body: body(),
+      bottomNavigationBar: bottomNavigationBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() {
           showDialog(
@@ -287,4 +313,6 @@ class _BoasVindasState extends State<BoasVindas> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+    
+
 }

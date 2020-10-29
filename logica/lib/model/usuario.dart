@@ -1,13 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserModel {
   String email;
   String senha;
-  final formkey = GlobalKey<FormState>();
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
